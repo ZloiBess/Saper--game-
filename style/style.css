@@ -1,0 +1,82 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  user-select: none;
+  background-color: rgb(45, 45, 45);
+}
+
+.wrapper {
+  min-height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+}
+.header {
+  height: 10%;
+  width: 100%;
+  background-color: rgb(132, 132, 132);
+  box-shadow: inset 0px 0px 10px 1px black;
+}
+
+.field {
+  padding: 0.5vh;
+  background-color: rgb(120, 120, 120);
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  row-gap: 0.5vh;
+  column-gap: 0.5vh;
+}
+
+.block {
+  width: min(4vh, 4vw);
+  height: min(4vh, 4vw);
+  background-color: white;
+  box-shadow: inset 0px 0px 10px 1px black;
+}
+
+p {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  line-height: 1;
+  font-size: 95%;
+  color: black;
+  text-shadow: 1px 1px 15px rgb(0, 0, 0);
+}
+
+.bomb {
+  background-color: red;
+}
+
+.block-cover {
+  background-color: rgb(125, 125, 125);
+  cursor: pointer;
+}
+
+.block-cover p {
+  color: rgba(0, 0, 0, 0);
+  text-shadow: none;
+}
+
+.block-open {
+  background-color: rgb(255, 255, 255);
+}
+
+.flag{
+  background-color: greenyellow;
+}
