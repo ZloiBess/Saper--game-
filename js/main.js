@@ -23,8 +23,9 @@ let start = true;
 //__________________________
 function reset() {
   countBomb = NUMBER_OF_BOMBS;
-  document.querySelector(".time").textContent = "00:00";
+  document.querySelector(".number-bombs").textContent = countBomb;
   countTime = 0;
+  document.querySelector(".time").textContent = "00:00";
   start = true;
   field.innerHTML = "";
   createField();
@@ -83,6 +84,7 @@ function createField() {
   cellsElem = field.children;
   addRandomBombsToField();
   addNumbersAroundBombs();
+  document.querySelector(".number-bombs").textContent = countBomb;
 }
 
 //__________________________
