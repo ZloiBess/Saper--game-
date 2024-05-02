@@ -3,15 +3,54 @@ let cellsElem = null;
 let bombIndexArr = null;
 let W_FIELD = 20;
 let H_FIELD = 20;
-let NUMBER_OF_BOMBS = W_FIELD * H_FIELD * 0.2;
-console.log(NUMBER_OF_BOMBS);
-
+let NUMBER_OF_BOMBS = W_FIELD * H_FIELD * 0.1;
+let countBomb = NUMBER_OF_BOMBS;
+let countTime = 0;
 //_____________Start____________
+createField();
+field.addEventListener('click', run);
+
 function run() {
-  createField();
+  document.querySelector('.number-bombs').textContent = countBomb;
   field.addEventListener("click", clickCell);
+  field.addEventListener("contextmenu", addFlag);
+ 
+  let m = 0;
+  setInterval(() => {
+    countTime++;
+    let s = countTime;
+    if(s < 10){
+      s = '0'+s;
+    }
+    if(s == 60){
+      s = '00';
+      countTime = 0;
+      m += 1;
+    }
+
+    document.querySelector('.time').textContent = `${m}:${s}`;
+  }, 100)
+  field.removeEventListener('click', run);
 }
-run();
+
+//___________________________
+function addFlag(event) {
+  event.preventDefault();
+  let elem = event.target;
+  if (elem.tagName === "P") elem = elem.parentNode;
+  if (!elem.classList.contains("block")) return;
+
+  if (!elem.classList.contains("block-open")) {
+    if (elem.classList.contains("flag")) {
+      elem.classList.remove("flag");
+      countBomb++;
+    } else {
+      elem.classList.add("flag");
+      countBomb--;
+    }
+    document.querySelector('.number-bombs').textContent = countBomb;
+  }
+}
 
 //___________________________
 function createField() {
@@ -33,6 +72,7 @@ function createField() {
 //__________________________
 function clickCell(event) {
   let element = event.target;
+  if (element.classList.contains("flag")) return;
 
   if (element.classList.contains("bomb")) {
     console.log("LOSE");
@@ -43,6 +83,7 @@ function clickCell(event) {
 
   if (element.tagName === "P") {
     let parend = element.parentNode;
+    if (parend.classList.contains("flag")) return;
     if (parend.classList.contains("block-cover")) {
       parend.classList.remove("block-cover");
     }
@@ -61,6 +102,7 @@ function clickCell(event) {
 function openCellsWithBomb() {
   for (let i = 0; i < cellsElem.length; i++) {
     if (cellsElem[i].classList.contains("bomb")) {
+      cellsElem[i].classList.remove("flag");
       cellsElem[i].classList.remove("block-cover");
     }
   }
