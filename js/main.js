@@ -1,9 +1,12 @@
 let field = document.querySelector(".field");
-let cellsElem = null;
-let bombIndexArr = null;
+let resetBtn = document.querySelector(".reset");
+let win = document.querySelector(".win");
 let W_FIELD = 20;
 let H_FIELD = 20;
-let NUMBER_OF_BOMBS = W_FIELD * H_FIELD * 0.1;
+let NUMBER_OF_BOMBS = W_FIELD * H_FIELD * 0.2;
+
+let cellsElem = null;
+let bombIndexArr = null;
 let countBomb = NUMBER_OF_BOMBS;
 let countTime = 0;
 let indexIntervalTime = null;
@@ -14,14 +17,19 @@ let start = true;
   createField();
   field.addEventListener("click", clickCell);
   field.addEventListener("contextmenu", addFlag);
-  document.querySelector(".reset").addEventListener("click", () => {
+
+  resetBtn.addEventListener("click", () => {
+    field.addEventListener("click", clickCell);
+    field.addEventListener("contextmenu", addFlag);
     clearInterval(indexIntervalTime);
+    resetBtn.classList.remove("light-box");
     reset();
   });
 }
 
 //__________________________
 function reset() {
+  win.style.display = "none";
   countBomb = NUMBER_OF_BOMBS;
   document.querySelector(".number-bombs").textContent = countBomb;
   countTime = 0;
@@ -47,7 +55,7 @@ function startTime() {
       m += 1;
     }
     document.querySelector(".time").textContent = `${m}:${s}`;
-  }, 100);
+  }, 1000);
 }
 
 //___________________________
@@ -66,6 +74,7 @@ function addFlag(event) {
       countBomb--;
     }
     document.querySelector(".number-bombs").textContent = countBomb;
+    isWin();
   }
 }
 
@@ -110,9 +119,11 @@ function clickCell(event) {
 
   if (element.tagName === "P") {
     let parend = element.parentNode;
+
     if (parend.classList.contains("flag")) return;
     if (parend.classList.contains("block-cover")) {
       parend.classList.remove("block-cover");
+      parend.classList.add("block-open");
     }
   }
 
@@ -122,6 +133,35 @@ function clickCell(event) {
       element.classList.remove("block-cover");
       openAllEmptyCellAround(element);
     }
+  }
+  isWin();
+}
+
+//__________________________
+function isWin() {
+  let countOpenCell = 0;
+  let findBomb = 0;
+  for (let i = 0; i < cellsElem.length; i++) {
+    if (cellsElem[i].classList.contains("block-open")) {
+      countOpenCell++;
+    }
+    if (
+      cellsElem[i].classList.contains("bomb") &&
+      cellsElem[i].classList.contains("flag")
+    ) {
+      findBomb++;
+    }
+  }
+
+  if (
+    W_FIELD * H_FIELD - countOpenCell === NUMBER_OF_BOMBS ||
+    findBomb === NUMBER_OF_BOMBS
+  ) {
+    win.style.display = "flex";
+    clearInterval(indexIntervalTime);
+    field.removeEventListener("click", clickCell);
+    field.removeEventListener("contextmenu", addFlag);
+    resetBtn.classList.add("light-box");
   }
 }
 

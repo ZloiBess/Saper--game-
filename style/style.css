@@ -34,7 +34,7 @@ body {
   align-items: center;
 }
 
-.header-item{
+.header-item {
   flex: 0 1 100px;
   height: 50%;
   border: 2px solid black;
@@ -45,19 +45,20 @@ body {
   font-size: 150%;
 }
 
-.number-bombs{
-
+.number-bombs {
   background-color: rgb(255, 0, 0);
-
 }
 
-.reset{
-
+.reset {
+  cursor: pointer;
   background-color: rgb(168, 161, 32);
 }
 
-.time{
-  
+.reset:active {
+  background-color: wheat;
+}
+
+.time {
   background-color: rgb(0, 34, 255);
 }
 
@@ -69,6 +70,22 @@ body {
   align-items: center;
   row-gap: 0.4vh;
   column-gap: 0.4vh;
+}
+
+.win {
+  width: 30%;
+  height: 30%;
+  position: absolute;
+  top: 35%;
+  left: 35%;
+  background-color: rgba(1, 1, 1, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 200%;
+  text-shadow: 2px 2px 2px gold;
+  box-shadow: inset 0px 0px 50px 5px gold;
 }
 
 .block {
@@ -113,7 +130,12 @@ p {
   cursor: pointer;
 }
 
-.flag p{
+.flag p {
   color: greenyellow;
   text-shadow: none;
+}
+
+.light-box {
+  box-shadow: 0px 0px 30px 10px rgb(242, 255, 0);
+  background-color: greenyellow;
 }
