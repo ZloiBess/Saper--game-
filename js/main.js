@@ -23,6 +23,7 @@ let start = true;
 //__________________________
 function reset() {
   countBomb = NUMBER_OF_BOMBS;
+  document.querySelector(".time").textContent = "00:00";
   countTime = 0;
   start = true;
   field.innerHTML = "";
@@ -86,13 +87,16 @@ function createField() {
 
 //__________________________
 function clickCell(event) {
+  let element = event.target;
+
   if (start) {
-    document.querySelector(".number-bombs").textContent = countBomb;
-    startTime();
-    start = false;
+    if (element.classList.contains("block") || element.tagName === "P") {
+      document.querySelector(".number-bombs").textContent = countBomb;
+      startTime();
+      start = false;
+    }
   }
 
-  let element = event.target;
   if (element.classList.contains("flag")) return;
 
   if (element.classList.contains("bomb")) {
