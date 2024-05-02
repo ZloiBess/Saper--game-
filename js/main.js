@@ -6,31 +6,46 @@ let H_FIELD = 20;
 let NUMBER_OF_BOMBS = W_FIELD * H_FIELD * 0.1;
 let countBomb = NUMBER_OF_BOMBS;
 let countTime = 0;
-//_____________Start____________
-createField();
-field.addEventListener('click', run);
+let indexIntervalTime = null;
+let start = true;
 
-function run() {
-  document.querySelector('.number-bombs').textContent = countBomb;
+//_____________Start____________
+{
+  createField();
   field.addEventListener("click", clickCell);
   field.addEventListener("contextmenu", addFlag);
- 
+  document.querySelector(".reset").addEventListener("click", () => {
+    clearInterval(indexIntervalTime);
+    reset();
+  });
+}
+
+//__________________________
+function reset() {
+  countBomb = NUMBER_OF_BOMBS;
+  countTime = 0;
+  start = true;
+  field.innerHTML = "";
+  createField();
+  field.removeEventListener("click", reset);
+}
+
+//__________________________
+function startTime() {
   let m = 0;
-  setInterval(() => {
+  indexIntervalTime = setInterval(() => {
     countTime++;
     let s = countTime;
-    if(s < 10){
-      s = '0'+s;
+    if (s < 10) {
+      s = "0" + s;
     }
-    if(s == 60){
-      s = '00';
+    if (s == 60) {
+      s = "00";
       countTime = 0;
       m += 1;
     }
-
-    document.querySelector('.time').textContent = `${m}:${s}`;
-  }, 100)
-  field.removeEventListener('click', run);
+    document.querySelector(".time").textContent = `${m}:${s}`;
+  }, 100);
 }
 
 //___________________________
@@ -48,7 +63,7 @@ function addFlag(event) {
       elem.classList.add("flag");
       countBomb--;
     }
-    document.querySelector('.number-bombs').textContent = countBomb;
+    document.querySelector(".number-bombs").textContent = countBomb;
   }
 }
 
@@ -71,13 +86,19 @@ function createField() {
 
 //__________________________
 function clickCell(event) {
+  if (start) {
+    document.querySelector(".number-bombs").textContent = countBomb;
+    startTime();
+    start = false;
+  }
+
   let element = event.target;
   if (element.classList.contains("flag")) return;
 
   if (element.classList.contains("bomb")) {
-    console.log("LOSE");
-    field.removeEventListener("click", clickCell);
+    clearInterval(indexIntervalTime);
     openCellsWithBomb();
+    field.addEventListener("click", reset);
     return;
   }
 
